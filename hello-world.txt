@@ -1,0 +1,23 @@
+include Glimmer
+
+shell {
+  label {
+    text 'Right-Click Me'
+    menu {
+      menu {
+        text '&History'
+        menu {
+          text "&Recent"
+          menu_item {
+            text "File 1"
+          }
+          menu_item {
+            text "File 2"
+          }
+        }
+      }
+    }
+  }
+}.open
+
+
