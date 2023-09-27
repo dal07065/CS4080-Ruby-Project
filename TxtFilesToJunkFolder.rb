@@ -19,9 +19,17 @@ shell {
       }
 
       message_box {
-	text "Surprise"
-	message "The deed has been done. Check your directory"
+        text "Surprise"
+        message "The deed has been done. Check your directory"
       }.open
     end
   }
 }.open
+
+def toJunkFolder(extension)
+  Dir.mkdir("junk")
+  s = Dir["./*" + extension]
+  s.each { |file|
+    FileUtils.mv(file, './junk')
+  }
+end

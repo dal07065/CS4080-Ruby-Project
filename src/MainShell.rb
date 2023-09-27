@@ -1,4 +1,5 @@
 require "./FileTypes.rb"
+require "../TxtFilesToJunkFolder.rb"
 
 class MainShell
     include Glimmer
@@ -6,22 +7,31 @@ class MainShell
     def launch
         shell {
             minimum_size 1000, 1000
-            row_layout {
-                type :horizontal
-            }
-            text "File Organizer"
+            tab_folder {
+                tab_item {
+                    text "Move files to junk folder"
 
-            file_type = FileTypes.new
-
-            label {
-                text "File type"
-            }
-            
-            combo (:read_only) {
-                selection bind(file_type, :extension)
-
-                on_widget_selected {
-                    puts file_type.extension
+                    row_layout {
+                        type :horizontal
+                    }
+                    text "File Organizer"
+        
+                    file_type = FileTypes.new
+        
+                    label {
+                        text "File type"
+                    }
+                    
+                    combo (:read_only) {
+                        selection bind(file_type, :extension)
+                    }
+        
+                    button {
+                        text "Submit"
+                        on_widget_selected do
+                            toJunkFolder(file_type.extension)
+                        end
+                    }
                 }
             }
         }.open
