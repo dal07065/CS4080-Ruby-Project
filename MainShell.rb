@@ -1,10 +1,17 @@
-require "./FileTypes.rb"
-require "../TxtFilesToJunkFolder.rb"
+require "glimmer-dsl-swt"
+require "./src/FileTypes.rb"
+require "./src/TxtFilesToJunkFolder.rb"
 
 class MainShell
-    include Glimmer
+    include Glimmer::UI::CustomShell
 
-    def launch
+    attr_accessor :default
+
+    before_body do
+        self.default = "txt"
+    end
+
+    body {
         shell {
             minimum_size 1000, 1000
             tab_folder {
@@ -22,18 +29,21 @@ class MainShell
                         text "File type"
                     }
                     
-                    combo (:read_only) {
-                        selection bind(file_type, :extension)
+                    text {
+                        layout_data :fill, :center, true, false
+                        text <=> [self, :default]
                     }
         
                     button {
                         text "Submit"
                         on_widget_selected do
-                            toJunkFolder(file_type.extension)
+                            toJunkFolder('.' + self.default)
                         end
                     }
                 }
             }
         }.open
-    end
+    }
 end
+
+MainShell.launch
