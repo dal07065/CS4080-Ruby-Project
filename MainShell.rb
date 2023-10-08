@@ -13,7 +13,7 @@ class MainShell
 
     body {
         shell {
-            minimum_size 1000, 1000
+            minimum_size 100, 100
             tab_folder {
                 tab_item {
                     text "Move files to junk folder"
