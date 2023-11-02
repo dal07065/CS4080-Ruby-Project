@@ -4,11 +4,12 @@ require "./src/TxtFilesToJunkFolder.rb"
 
 class MainShell
   include Glimmer::UI::CustomShell
-  attr_accessor :extension, :cwd
+  attr_accessor :extension, :cwd, :sortType
 
   before_body do
     @extension = "txt"
     @cwd = Dir.pwd
+    @sortType = "name"
   end
 
   body {
@@ -40,13 +41,22 @@ class MainShell
             }
           }
 
+          label {
+              text "Sort type"
+          }
+
+          text {
+              layout_data :fill, :center, true, false
+              text <=> [self, :sortType]
+          }
+
           composite {
             layout_data :end, :center, true, false
 
             button {
               text "Submit"
               on_widget_selected do
-                toJunkFolder('.' + @extension)
+                toJunkFolder('.' + self.extension, self.sortType)
               end
             }
           }
