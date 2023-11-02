@@ -1,46 +1,69 @@
 require "glimmer-dsl-swt"
-require "./src/FileTypes.rb"
 require "./src/TxtFilesToJunkFolder.rb"
+require "./src/Icons.rb"
 
 class MainShell
     include Glimmer::UI::CustomShell
-
-    attr_accessor :default
+    attr_accessor :extension
 
     before_body do
-        self.default = "txt"
+        self.extension = "txt"
     end
 
-    body {
-        shell {
-            minimum_size 1000, 1000
+  body {
+    shell {
+      text "File Organizer"
+      grid_layout 1, true
+      minimum_size 360, 360
+
             tab_folder {
+                layout_data :fill, :beginning, true, false
+
                 tab_item {
                     text "Move files to junk folder"
+                    grid_layout 2, true
 
-                    row_layout {
-                        type :horizontal
+                    composite {
+                        layout_data :beginning, :center, true, false
+
+                        row_layout {
+                            type :horizontal
+                        }
+
+                        label {
+                            text "File type"
+                        }
+
+                        text {
+                            text <=> [self, :extension]
+                        }
                     }
-                    text "File Organizer"
-        
-                    file_type = FileTypes.new
-        
-                    label {
-                        text "File type"
-                    }
-                    
-                    text {
-                        layout_data :fill, :center, true, false
-                        text <=> [self, :default]
-                    }
-        
-                    button {
-                        text "Submit"
-                        on_widget_selected do
-                            toJunkFolder('.' + self.default)
-                        end
+
+                    composite {
+                        layout_data :end, :center, true, false
+
+                        button {
+                            text "Submit"
+                            on_widget_selected do
+                                toJunkFolder('.' + @extension)
+                            end
+                        }
                     }
                 }
+            }
+
+            composite {
+                files = Dir.entries(Dir.pwd).reject { |file| file == '.' || file == '..'}
+
+                for f in files do
+                    if File.directory?(f) then
+                        DirBtn.new(Dir.pwd, f).body
+                    else
+                        button {
+                            text f
+                        }
+                    end
+                end
             }
         }.open
     }
