@@ -1,13 +1,14 @@
 require "glimmer-dsl-swt"
+require "fileutils"
 require "./src/TxtFilesToJunkFolder.rb"
-require "./src/Icons.rb"
 
 class MainShell
   include Glimmer::UI::CustomShell
-  attr_accessor :extension
+  attr_accessor :extension, :cwd
 
   before_body do
-    self.extension = "txt"
+    @extension = "txt"
+    @cwd = Dir.pwd
   end
 
   body {
@@ -53,11 +54,23 @@ class MainShell
       }
 
       composite {
-        files = Dir.entries(Dir.pwd).reject { |file| file == '.' || file == '..'}
+        label {
+          text <= [self, :cwd]
+        }
+
+        files = Dir.entries(@cwd).reject { |file| file == '.' || file == '..'}
 
         for f in files do
           if File.directory?(f) then
-            DirBtn.new(Dir.pwd, f).body
+            button {
+              text f
+              background rgb(247, 198, 109)
+
+              on_widget_selected do
+                FileUtils.cd(File.join(@cwd, @name))
+                @cwd = Dir.pwd
+              end
+            }
           else
             button {
               text f
