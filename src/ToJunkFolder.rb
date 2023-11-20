@@ -1,19 +1,19 @@
 require 'fileutils'
 
-include Glimmer
+def toJunkFolder(extension)
+  directory_name = extension + "_junk"
 
-def toJunkFolder(extension, sortType) 
-  if !Dir.exist?(extension)
-    directory_name = extension[1].upcase + extension[2..-1] + ' files'
-    Dir.mkdir(directory_name) 
+  if !Dir.exist?(directory_name)
+    Dir.mkdir(directory_name)
   end
-  s = Dir["./*" + extension]
-  s = sortBy(s, sortType)
-  s.each { |file|
-  FileUtils.mv(file, "./" + directory_name)
-  puts Dir.children(directory_name)
-  puts "--------------------------"
-  
+
+  allFiles = Dir["./*" + extension]
+  puts "\tMoved files:"
+
+  allFiles.each { |file|
+    FileUtils.mv(file, "./" + directory_name)
+    puts Dir.children(directory_name)
+    puts "--------------------------"
   }
 end
 
@@ -28,5 +28,24 @@ def sortBy(files, sortType, ascending = true)
     files = files.reverse
   end
 
-  return files
+  puts "\tFiles sorted by " + sortType + ':'
+  files.each { |f|
+    puts f
+  }
+end
+
+def sortAll()
+  allFiles = Dir.entries('.').reject { |file|
+    File.directory?(file)
+  }
+
+  allFiles.each { |f|
+    directory_name = allFiles.length() > 1 ? f.split('.', -1)[1] + "_files" : "some_files"
+
+    if !Dir.exist?(directory_name)
+      Dir.mkdir(directory_name)
+    end
+
+    FileUtils.mv(f, directory_name)
+  }
 end
