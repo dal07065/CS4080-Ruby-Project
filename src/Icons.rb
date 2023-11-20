@@ -1,6 +1,8 @@
 require "glimmer-dsl-swt"
 require "fileutils"
 
+# attempted to use this custom widget to enable changing directory by selecting a DirBtn
+# unfortunately, observer hooks are useful for updating data in widgets, not the widgets themselves
 class DirBtn
   include Glimmer::UI::CustomWidget
 

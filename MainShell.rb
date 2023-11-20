@@ -1,14 +1,16 @@
 require "glimmer-dsl-swt"
 require "fileutils"
-require "./src/TxtFilesToJunkFolder.rb"
+require "./src/SortTypes.rb"
+require "./src/ToJunkFolder.rb"
 
 class MainShell
   include Glimmer::UI::CustomShell
-  attr_accessor :extension, :cwd
+  attr_accessor :extension, :cwd, :sortType
 
   before_body do
     @extension = "txt"
     @cwd = Dir.pwd
+    @sortType = SortTypes.new
   end
 
   body {
@@ -46,7 +48,39 @@ class MainShell
             button {
               text "Submit"
               on_widget_selected do
-                toJunkFolder('.' + @extension)
+                toJunkFolder('.' + self.extension, "name")
+              end
+            }
+          }
+        }
+
+        tab_item {
+          text "Sort files"
+          grid_layout 2, true
+
+          composite {
+            layout_data :beginning, :center, true, false
+
+            row_layout {
+              type :horizontal
+            }
+
+            label {
+              text "Sort type"
+            }
+
+            list {
+              selection <=> [@sortType, :sortAttr]
+            }
+          }
+
+          composite {
+            layout_data :end, :center, true, false
+
+            button {
+              text "Submit"
+              on_widget_selected do
+                sortBy(Dir.entries('.'), self.sortType)
               end
             }
           }
