@@ -1,5 +1,6 @@
 require "glimmer-dsl-swt"
 require "fileutils"
+require "./src/SortTypes.rb"
 require "./src/ToJunkFolder.rb"
 
 class MainShell
@@ -9,7 +10,7 @@ class MainShell
   before_body do
     @extension = "txt"
     @cwd = Dir.pwd
-    @sortType = "name"
+    @sortType = SortTypes.new
   end
 
   body {
@@ -68,9 +69,8 @@ class MainShell
               text "Sort type"
             }
 
-            text {
-                layout_data :fill, :center, true, false
-                text <=> [self, :sortType]
+            list {
+              selection <=> [@sortType, :sortAttr]
             }
           }
 
