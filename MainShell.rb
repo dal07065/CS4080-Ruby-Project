@@ -48,7 +48,7 @@ class MainShell
             button {
               text "Submit"
               on_widget_selected do
-                toJunkFolder('.' + self.extension, "name")
+                toJunkFolder('.' + self.extension)
               end
             }
           }
@@ -81,6 +81,17 @@ class MainShell
               text "Submit"
               on_widget_selected do
                 sortBy(Dir.entries('.'), self.sortType)
+              end
+            }
+          }
+
+          composite {
+            layout_data :beginning, :center, true, false
+
+            button {
+              text "Sort all files"
+              on_widget_selected do
+                sortAll
               end
             }
           }
