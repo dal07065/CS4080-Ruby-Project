@@ -18,9 +18,9 @@ def toJunkFolder(extension)
 end
 
 def sortBy(files, sortType, ascending = true)
-  if sortType == "name"
+  if sortType.sortAttr == "name"
     files = files.sort
-  elsif sortType == "date"
+  elsif sortType.sortAttr == "date"
     files = files.sort_by{ |file| File.birthtime(file)}
   end
 
@@ -28,7 +28,7 @@ def sortBy(files, sortType, ascending = true)
     files = files.reverse
   end
 
-  puts "\tFiles sorted by " + sortType + ':'
+  puts "\tFiles sorted by " + sortType.sortAttr + ':'
   files.each { |f|
     puts f
   }
