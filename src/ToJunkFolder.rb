@@ -7,7 +7,7 @@ def toJunkFolder(extension)
     Dir.mkdir(directory_name)
   end
 
-  allFiles = Dir["./*" + extension]
+  allFiles = Dir["./*" + '.' + extension]
   puts "\tMoved files:"
 
   allFiles.each { |file|

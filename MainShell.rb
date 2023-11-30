@@ -48,7 +48,7 @@ class MainShell
             button {
               text "Submit"
               on_widget_selected do
-                toJunkFolder('.' + self.extension)
+                toJunkFolder(self.extension)
               end
             }
           }
